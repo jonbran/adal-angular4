@@ -155,7 +155,7 @@ export class Adal4HTTPService {
             if (options1.headers == null) {
               options1.headers = new Headers();
             }
-            options1.headers.append('Authorization', 'Bearer ' + token);
+            options1.headers.set('Authorization', 'Bearer ' + token);
             return this.http.request(url, options1)
               .catch(this.handleError);
           });
