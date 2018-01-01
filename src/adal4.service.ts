@@ -60,6 +60,11 @@ export class Adal4Service {
 
     // redirect and logout_redirect are set to current location by default
     const existingHash = window.location.hash;
+    var regPat = /\#(?:access_token|id_token)=/g;
+    var match = regPat.test(existingHash);
+    if(!match && existingHash) {
+      this.saveHash(existingHash);
+    } 
 
     let pathDefault = window.location.href;
     if (existingHash) {
@@ -77,6 +82,26 @@ export class Adal4Service {
     // loginresource is used to set authenticated status
     this.updateDataFromCache(this.adalContext.config.loginResource);
   }
+
+  private saveHash(hash: string) {
+    if(sessionStorage) {
+      sessionStorage.setItem("urlHash", hash);
+    }
+  }
+
+  private getHash(): string {
+    if(sessionStorage) {
+      var hash: string = sessionStorage.getItem("urlHash");
+    }
+    return hash;
+  }
+
+  private clearHash() {
+    if(sessionStorage) {
+      sessionStorage.removeItem("urlHash");
+    }
+  }
+  
 
   /**
    *
@@ -170,6 +195,11 @@ export class Adal4Service {
     if (window.location.hash) {
       window.location.href = window.location.href.replace(window.location.hash, '');
     }
+    // Finally, if there was a hash set by the application return it to the url.
+    var lastHash = this.getHash();
+    if(lastHash) {
+      window.location.href = lastHash;
+    }
   }
 
   /**
@@ -248,6 +278,7 @@ export class Adal4Service {
    */
   public clearCache(): void {
     this.adalContext.clearCache();
+    this.clearHash();
   }
 
   /**
