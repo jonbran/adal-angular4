@@ -14,7 +14,7 @@ import User = adal.User;
  */
 @Injectable()
 export class Adal4Service {
-
+  private storageKey: string = "80267da1-8802-45b2-afab-f209cdbf0ab6";
   /**
    *
    *
@@ -85,20 +85,20 @@ export class Adal4Service {
 
   private saveHash(hash: string) {
     if(sessionStorage) {
-      sessionStorage.setItem("urlHash", hash);
+      sessionStorage.setItem(this.storageKey, hash);
     }
   }
 
   private getHash(): string {
     if(sessionStorage) {
-      var hash: string = sessionStorage.getItem("urlHash");
+      var hash: string = sessionStorage.getItem(this.storageKey);
     }
     return hash;
   }
 
   private clearHash() {
     if(sessionStorage) {
-      sessionStorage.removeItem("urlHash");
+      sessionStorage.removeItem(this.storageKey);
     }
   }
   
