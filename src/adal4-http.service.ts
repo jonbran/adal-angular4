@@ -141,6 +141,10 @@ export class Adal4HTTPService {
    * @memberOf Adal4HTTPService
    */
   private sendRequest(url: string, options: RequestOptionsArgs): Observable<string> {
+    if(!this.service.isAuthenticated) {
+      this.service.login();
+      return;
+    }
     // make a copy
     let options1 = new RequestOptions();
     options1.method = options.method;

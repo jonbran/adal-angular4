@@ -115,6 +115,14 @@ export class Adal4Service {
   }
 
   /**
+ * using adal4User.authenticated isn't reliable. It doesn't update when a token is expired.
+ */
+  public get isAuthenticated(): boolean {
+    var token = this.getCachedToken(this.adalContext.config.loginResource);
+    return (token !== null)
+  }
+
+  /**
    *
    *
    * @readonly
